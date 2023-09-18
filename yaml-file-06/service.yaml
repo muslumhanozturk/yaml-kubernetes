@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-flask-svc
+  namespace: demo
+  labels:
+    env: dev
+spec:
+  # type: ClusterIP # Only communicate within the cluster
+  # type: NodePort # open communication to the outside world
+  type: LoadBalancer   # enables using load balancers to route traffic from the outside world to the Kubernetes cluster
+  ports:
+  - port: 3000 # the port of the service, we write whatever we want
+    targetPort: 5000 # container port
+    nodePort: 30036 # If this is not written, it returns random
+  selector:
+    app: web-flask # It will be connected to pods with this label with the selector.
