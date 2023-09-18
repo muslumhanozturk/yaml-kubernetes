@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-flask-deploy
+  namespace: demo
+  labels:
+    env: dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-flask
+  minReadySeconds: 10 # After 10 seconds consider it ready.
+  strategy: # # pods to form row by row
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: web-flask
+    spec:
+      containers:
+      - name: web-flask-pod
+        image: clarusway/cw_web_flask1
+        ports:
+        - containerPort: 5000
